@@ -20,8 +20,11 @@ export class YorubaHymn {
   @Prop({ type: String, required: true })
   title: string;
 
-  @Prop({ type: Number, required: true })
+  @Prop({ type: Number, required: true, unique: true })
   number: number;
+
+  @Prop({ type: String })
+  tune: string;
 
   @Prop({ type: String, default: HymnLanguage.YORUBA })
   language: string;

@@ -2,6 +2,8 @@ import { Type } from 'class-transformer';
 import {
   IsArray,
   IsEnum,
+  IsInt,
+  IsNumber,
   IsOptional,
   IsString,
   ValidateNested,
@@ -9,6 +11,7 @@ import {
 import { HymnLanguage } from 'src/enum/hymn.enum';
 
 class CreateVerseDto {
+  @IsInt()
   @Type(() => Number)
   number: number;
 
@@ -16,6 +19,7 @@ class CreateVerseDto {
   text: string;
 
   @IsOptional()
+  @IsInt()
   @Type(() => Number)
   stanza?: number;
 }
@@ -26,6 +30,13 @@ export class CreateHymnDto {
 
   @IsString()
   title: string;
+
+  @IsNumber()
+  number: number;
+
+  @IsOptional()
+  @IsString()
+  tune: string;
 
   @IsOptional()
   @IsString()

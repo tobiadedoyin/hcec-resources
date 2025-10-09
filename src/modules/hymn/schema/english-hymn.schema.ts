@@ -18,13 +18,16 @@ export const VerseSchema = SchemaFactory.createForClass(Verse);
 @Schema({ timestamps: true })
 export class EnglishHymn {
   @Prop({ type: String, required: true })
-    title: string;
-    
-  @Prop({ type: Number, required: true })
+  title: string;
+
+  @Prop({ type: Number, required: true, unique: true })
   number: number;
 
   @Prop({ type: String, default: HymnLanguage.ENGLISH })
   language: string;
+
+  @Prop({ type: String })
+  tune: string;
 
   @Prop({ type: String })
   author?: string;

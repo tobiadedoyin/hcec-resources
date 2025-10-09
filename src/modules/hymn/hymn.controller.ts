@@ -37,7 +37,7 @@ export class HymnsController {
 
   // GET /hymns?lang=yoruba
   @Get()
-  findAll(@Query('lang') lang?: string) {
+  findAll(@Query('language') lang?: string) {
     const language = this.parseLang(lang);
     return this.hymnService.findAll(language);
   }
