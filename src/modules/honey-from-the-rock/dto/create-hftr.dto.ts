@@ -9,16 +9,6 @@ import {
   ValidateNested,
 } from 'class-validator';
 
-class LessonQuestionDto {
-  @IsOptional()
-  @IsString()
-  question?: string;
-
-  @IsOptional()
-  @IsString()
-  answer?: string;
-}
-
 export class CreateLessonDto {
   @IsNotEmpty()
   @IsString()
@@ -56,11 +46,9 @@ export class CreateLessonDto {
 
   @IsOptional()
   @IsArray()
-  @ValidateNested({ each: true })
-  @Type(() => LessonQuestionDto)
-  questions?: LessonQuestionDto[];
+  questions?: string[];
 
   @IsOptional()
   @IsString()
-  lifeApplication?: string;
+  lifeApplication?: string[];
 }

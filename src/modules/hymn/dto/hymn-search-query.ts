@@ -1,15 +1,26 @@
-import { IsEnum, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import {
+  IsEnum,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 import { HymnLanguage } from 'src/enum/hymn.enum';
 
 export class HymnSearchQuery {
   @IsOptional()
-  @IsString()
-  @IsNotEmpty()
-  search: string;
+  @IsNumber()
+  page?: number;
 
   @IsOptional()
-  number: number;
+  @IsNumber()
+  limit?: number;
 
+  @IsOptional()
+  @IsNotEmpty()
+  search?: string;
+
+  @IsOptional()
   @IsEnum(HymnLanguage)
   language: string;
 }

@@ -1,12 +1,12 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
-export type DailyStudyDocument = DailyStudy & Document;
+export type DailyHoneyDocument = DailyHoney & Document;
 
 @Schema({ timestamps: true })
-export class DailyStudy {
+export class DailyHoney {
   @Prop({ required: true })               
-  day: string;
+  day: number;
 
   @Prop({ required: true })
   topic: string;
@@ -27,4 +27,4 @@ export class DailyStudy {
   prayer?: string;
 }
 
-export const DailyStudySchema = SchemaFactory.createForClass(DailyStudy);
+export const DailyHoneySchema = SchemaFactory.createForClass(DailyHoney);

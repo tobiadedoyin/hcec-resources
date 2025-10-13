@@ -40,44 +40,101 @@ export class HymnService {
     };
   }
 
-  async findByNumberOrTitle(query: HymnSearchQuery) {
-    const { search, number, language } = query;
 
-    let model: any;
-    if (language === HymnLanguage.ENGLISH) {
-      model = this.englishHymnModel;
-    } else if (language === HymnLanguage.YORUBA) {
-      model = this.yorubaHymnModel;
-    } else {
-      throw new BadRequestException('Invalid or missing language');
-    }
+async getHymnsAndTotal(
+  model: any,
+  conditions: any,
+  skip: number,
+  limit: number,
+) {
+  const [hymns, total] = await Promise.all([
+    model.find(conditions).skip(skip).limit(limit).lean(),
+    model.countDocuments(conditions),
+  ]);
 
-    const conditions: any = {};
+  return { hymns, total };
+}
 
-    if (number) {
-      conditions.number = number;
-    } else if (search) {
-      conditions.title = { $regex: search, $options: 'i' };
-    } else {
-      throw new BadRequestException(
-        'Please provide a search term or hymn number',
-      );
-    }
+async findByNumberOrTitle(
+  page: number = 1,
+  limit: number = 20,
+  query: HymnSearchQuery,
+) {
+  const { search, language } = query;
+  const skip = (page - 1) * limit;
 
-    const hymns = await model.find(conditions).lean();
+  let primaryModel: any;
+  let fallbackModel: any;
+  let primaryLanguage: HymnLanguage;
+  let fallbackLanguage: HymnLanguage;
 
-    if (!hymns || hymns.length === 0) {
-      throw new NotFoundException(
-        'No hymns found for the given search criteria',
-      );
-    }
-
-    return {
-      message: `${language} hymns found successfully`,
-      count: hymns.length,
-      data: hymns,
-    };
+  if (language === HymnLanguage.ENGLISH) {
+    primaryModel = this.englishHymnModel;
+    fallbackModel = this.yorubaHymnModel;
+    primaryLanguage = HymnLanguage.ENGLISH;
+    fallbackLanguage = HymnLanguage.YORUBA;
+  } else if (language === HymnLanguage.YORUBA) {
+    primaryModel = this.yorubaHymnModel;
+    fallbackModel = this.englishHymnModel;
+    primaryLanguage = HymnLanguage.YORUBA;
+    fallbackLanguage = HymnLanguage.ENGLISH;
+  } else {
+    throw new BadRequestException('Invalid or missing language');
   }
+
+  const conditions: any = {};
+  if (search) {
+    const searchInput = String(search).trim();
+    const numericSearch = parseInt(searchInput, 10);
+
+    if (!isNaN(numericSearch) && String(numericSearch) === searchInput) {
+      conditions.number = numericSearch;
+    } else {
+      conditions.title = { $regex: searchInput, $options: 'i' };
+    }
+  }
+
+  let result = await this.getHymnsAndTotal(
+    primaryModel,
+    conditions,
+    skip,
+    limit,
+  );
+  let foundInLanguage = primaryLanguage;
+
+  if (result.hymns.length === 0) {
+    result = await this.getHymnsAndTotal(
+      fallbackModel,
+      conditions,
+      skip,
+      limit,
+    );
+
+    if (result.hymns.length > 0) {
+      foundInLanguage = fallbackLanguage;
+    }
+  }
+
+  const { hymns, total } = result;
+
+  return {
+    message:
+      hymns.length > 0
+        ? `Hymns found successfully (Language: ${foundInLanguage})`
+        : `No hymns found for search query.`,
+    count: hymns.length,
+    data: {
+      hymns,
+      pagination: {
+        page,
+        limit,
+        total,
+        hasMore: page * limit < total,
+      },
+    },
+  };
+}
+
 
   async findAll(lang: HymnLanguage = HymnLanguage.ENGLISH) {
     let hymns: any;
@@ -95,7 +152,6 @@ export class HymnService {
   }
 
   async findOne(id: string, lang: HymnLanguage = HymnLanguage.ENGLISH) {
-    //TODO replace with search query
     let hymn: any;
 
     if (lang === HymnLanguage.ENGLISH) {

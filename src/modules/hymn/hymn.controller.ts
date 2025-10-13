@@ -35,28 +35,27 @@ export class HymnsController {
     return this.hymnService.create(dto);
   }
 
-  // GET /hymns?lang=yoruba
   @Get()
   findAll(@Query('language') lang?: string) {
     const language = this.parseLang(lang);
     return this.hymnService.findAll(language);
   }
 
-  // GET /hymns/filter...
   @Get('filter')
-  findByNumberOrTitle(@Query() data: HymnSearchQuery) {
-    const language = this.parseLang(data.language);
-    return this.hymnService.findByNumberOrTitle({ language, ...data });
+  findByNumberOrTitle(
+    @Query('page') page: number = 1,
+    @Query('limit') limit: number = 20,
+    @Query() data: HymnSearchQuery,
+  ) {
+    return this.hymnService.findByNumberOrTitle(page, limit, data);
   }
 
-  // GET /hymns/:id?lang=english
   @Get(':id')
   findOne(@Param('id') id: string, @Query('lang') lang?: string) {
     const language = this.parseLang(lang);
     return this.hymnService.findOne(id, language);
   }
 
-  // POST /hymns/:id/verses?lang=yoruba
   @Post(':id/verses')
   addVerse(
     @Param('id') id: string,
@@ -67,7 +66,6 @@ export class HymnsController {
     return this.hymnService.addVerse(id, dto, language);
   }
 
-  // PATCH /hymns/:id  (body: UpdateHymnDto) ?lang=
   @Patch(':id')
   update(
     @Param('id') id: string,
@@ -78,7 +76,6 @@ export class HymnsController {
     return this.hymnService.update(id, dto, language);
   }
 
-  // DELETE /hymns/:id?lang=
   @Delete(':id')
   remove(@Param('id') id: string, @Query('lang') lang?: string) {
     const language = this.parseLang(lang);
