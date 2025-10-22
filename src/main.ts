@@ -43,12 +43,12 @@ async function bootstrap() {
       }),
     );
 
-    const corsOrigins = process.env.CORS_ORIGINS?.split(',') || [
-      'http://localhost:3000',
-    ];
+    // const corsOrigins = process.env.CORS_ORIGINS?.split(',') || [
+    //   'http://localhost:3000',
+    // ];
 
     app.enableCors({
-      origin: process.env.NODE_ENV === 'production' ? corsOrigins : '*',
+      origin: '*',
       credentials: true,
       methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
       allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
