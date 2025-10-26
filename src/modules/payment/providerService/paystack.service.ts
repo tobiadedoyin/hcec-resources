@@ -14,7 +14,7 @@ export class PaystackService {
 
     return this.config.get<string>('NODE_ENV') === 'production'
       ? 'https://nexgad-frontend.onrender.com/payment-clearance'
-      : 'http://localhost:5173/payment-clearance';
+      : 'http://localhost:3000/payment-clearance';
   }
 
   async initPaystackPayment(email: string, amount: number) {

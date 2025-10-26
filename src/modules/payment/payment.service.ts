@@ -27,14 +27,14 @@ export class PaymentService {
 
   async initiatePayment(amount: number, email: string, txRef: string) {
     const providers = [
-      this.flutterService
-        .initFlutterwavePayment(amount, email, txRef)
-        .then((res) => ({ paymentGateway: PaymentGateway.FLUTTER, ...res })),
+      // this.flutterService
+      //   .initFlutterwavePayment(amount, email, txRef)
+      //   .then((res) => ({ paymentGateway: PaymentGateway.FLUTTER, ...res })),
       this.paystackService
         .initPaystackPayment(email, amount)
         .then((res) => ({ paymentGateway: PaymentGateway.PAYSTACK, ...res })),
     ];
-
+console.log("here")
     const result = await Promise.any(providers);
     const payment = await this.transactionModel.create({
       amount,
@@ -42,7 +42,7 @@ export class PaymentService {
       transactionRefrence: result.reference || txRef,
       paymentStatus: PaymentStatus.PENDING,
     });
-
+console.log("payment", payment)
     return {
       transactionId: payment.id,
       url: result.authorization_url || result.link,

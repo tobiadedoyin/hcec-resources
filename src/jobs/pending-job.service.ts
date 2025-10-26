@@ -30,7 +30,6 @@ export class PendingJobService {
     };
 
     await this.paymentService.updateTransactionDocument(data);
-    // await this.checkoutService.updateOrderStatus(customerEmail);
   }
 
   @Cron(CronExpression.EVERY_10_SECONDS)

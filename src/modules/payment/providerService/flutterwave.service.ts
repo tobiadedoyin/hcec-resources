@@ -14,8 +14,9 @@ export class FlutterwaveService {
 
     return this.config.get<string>('NODE_ENV') === 'production'
       ? 'https://nexgad-frontend.onrender.com/payment-clearance'
-      : 'http://localhost:5173/payment-clearance';
+      : 'http://localhost:3000/payment-clearance';
   }
+  
   async initFlutterwavePayment(amount: number, email: string, txRef: string) {
     const response = await axios.post(
       'https://api.flutterwave.com/v3/payments',
