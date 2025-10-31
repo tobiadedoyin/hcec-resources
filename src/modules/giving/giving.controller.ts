@@ -8,6 +8,6 @@ export class GivingController {
 
   @Post()
   async makePayment(@Body() data: CreateGivingDto) {
-    await this.givingService.makePayment(data);
+   return await this.givingService.makePayment(data);
   }
 }

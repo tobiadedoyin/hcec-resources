@@ -4,14 +4,6 @@ import { Type } from 'class-transformer';
 export class CreateGivingDto {
   @IsOptional()
   @IsString()
-  paymentCode?: string;
-
-  @IsOptional()
-  @IsString()
-  paymentType?: string;
-
-  @IsOptional()
-  @IsString()
   lastName?: string;
 
   @IsOptional()
@@ -41,8 +33,4 @@ export class CreateGivingDto {
   @Type(() => Number)
   @IsNumber()
   amount: number;
-
-  @IsOptional()
-  @IsString()
-  transaction?: string;
 }

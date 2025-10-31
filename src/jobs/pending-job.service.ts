@@ -36,7 +36,7 @@ export class PendingJobService {
   async processJobs() {
     const now = new Date();
 
-    const job = await this.persistJobTaskService.updatedPendingJobs(now);
+    const job = await this.persistJobTaskService.getPendingJobs(now);
 
     if (!job) return;
 
@@ -71,16 +71,18 @@ export class PendingJobService {
 
   async handleJob(job: PendingJobDocument) {
     if (job.type === PendingJobType.GIVING_STATUS_UPDATE) {
-      const { gateway, body } = job.payload;
+      const { gateway, data } = job.payload;
+
+      const body = data;
 
       if (gateway === PaymentGateway.PAYSTACK) {
         await this.handlePaymentUpdate(
-          body.data?.status === 'success'
+          body?.status === 'success'
             ? PaymentStatus.SUCCESS
             : PaymentStatus.FAILED,
-          body?.data?.channel,
-          body?.data?.reference,
-          body?.data?.customer.email,
+          body?.channel,
+          body?.reference,
+          body?.customer.email,
         );
       }
 

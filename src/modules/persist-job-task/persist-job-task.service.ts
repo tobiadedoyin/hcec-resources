@@ -19,12 +19,7 @@ export class PersistJobTaskService {
     return job;
   }
 
-  async getPendingJobs(type: PendingJobType) {
-    const jobs = await this.pendingJobModel.find({ type });
-    return jobs;
-  }
-
-  async updatedPendingJobs(now: Date) {
+  async getPendingJobs(now: Date) {
     const job = await this.pendingJobModel.findOneAndUpdate(
       {
         status: 'pending',
@@ -49,7 +44,6 @@ export class PersistJobTaskService {
 
     if (!updatedJob) {
       this.logger.error('job could not be updated');
-      console.log('job could not be updated');
     }
   }
 }

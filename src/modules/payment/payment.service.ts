@@ -34,7 +34,7 @@ export class PaymentService {
         .initPaystackPayment(email, amount)
         .then((res) => ({ paymentGateway: PaymentGateway.PAYSTACK, ...res })),
     ];
-console.log("here")
+
     const result = await Promise.any(providers);
     const payment = await this.transactionModel.create({
       amount,
@@ -42,7 +42,7 @@ console.log("here")
       transactionRefrence: result.reference || txRef,
       paymentStatus: PaymentStatus.PENDING,
     });
-console.log("payment", payment)
+
     return {
       transactionId: payment.id,
       url: result.authorization_url || result.link,
@@ -109,7 +109,10 @@ console.log("payment", payment)
 
     const data: CreatePendingJob = {
       type: PendingJobType.GIVING_STATUS_UPDATE,
-      payload: req.body,
+      payload: {
+        gateway: PaymentGateway.FLUTTER,
+        ...req.body,
+      },
     };
 
     await this.persistJobTaskService.createPendingJob(data);
@@ -136,7 +139,10 @@ console.log("payment", payment)
 
     const data: CreatePendingJob = {
       type: PendingJobType.GIVING_STATUS_UPDATE,
-      payload: req.body,
+      payload: {
+        gateway: PaymentGateway.PAYSTACK,
+        ...req.body,
+      },
     };
 
     await this.persistJobTaskService.createPendingJob(data);
