@@ -1,5 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { Cron } from '@nestjs/schedule';
+import { Cron, CronExpression } from '@nestjs/schedule';
 import { GivingService } from 'src/modules/giving/giving.service';
 
 @Injectable()
@@ -8,8 +8,8 @@ export class PaymentCleanupService {
   private running = false;
 
   constructor(private readonly givingService: GivingService) {}
-
-  @Cron('*/20 * * * * *')
+ 
+  @Cron(CronExpression.EVERY_HOUR)
   async handleCron() {
     if (this.running) {
       this.logger.warn('Previous cleanup still running — skipping this tick');

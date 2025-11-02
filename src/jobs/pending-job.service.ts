@@ -1,15 +1,16 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
-import { PendingJobType } from 'src/enum/jobs.enum';
-import { PaymentGateway, PaymentStatus } from 'src/enum/payment.enum';
-import { UpdateTransactionDto } from 'src/modules/payment/dto/update-transaction.dto';
-import { PaymentService } from 'src/modules/payment/payment.service';
-import { PersistJobTaskService } from 'src/modules/persist-job-task/persist-job-task.service';
-import { PendingJobDocument } from 'src/modules/persist-job-task/schema/pending-job.schema';
+import { PendingJobType } from '../enum/jobs.enum';
+import { PaymentGateway, PaymentStatus } from '../enum/payment.enum';
+import { UpdateTransactionDto } from '../modules/payment/dto/update-transaction.dto';
+import { PaymentService } from '../modules/payment/payment.service';
+import { PersistJobTaskService } from '../modules/persist-job-task/persist-job-task.service';
+import { PendingJobDocument } from '../modules/persist-job-task/schema/pending-job.schema';
 
 @Injectable()
 export class PendingJobService {
   private readonly logger = new Logger(PendingJobService.name);
+  private running = false;
 
   constructor(
     private readonly paymentService: PaymentService,
@@ -32,40 +33,53 @@ export class PendingJobService {
     await this.paymentService.updateTransactionDocument(data);
   }
 
-  @Cron(CronExpression.EVERY_10_SECONDS)
+  @Cron(CronExpression.EVERY_HOUR)
   async processJobs() {
-    const now = new Date();
+    if (this.running) {
+      this.logger.warn('Previous pending-job run still running — skipping this tick');
+      return;
+    }
 
-    const job = await this.persistJobTaskService.getPendingJobs(now);
-
-    if (!job) return;
-
+    this.running = true;
     try {
-      await this.handleJob(job);
-      await this.persistJobTaskService.updateJob(job._id, { status: 'done' });
-      this.logger.log(`✅ Job ${job._id} completed`);
-    } catch (err) {
-      const nextDelay = Math.min(
-        60_000 * Math.pow(2, job.attempts),
-        60 * 60 * 1000,
-      );
-      const update: any = {
-        lastError: err.message,
-        lockedAt: null,
-      };
+      const now = new Date();
 
-      if (job.attempts >= job.maxAttempts) {
-        update.status = 'failed';
-        this.logger.warn(
-          `❌ Job ${job._id} failed permanently: ${err.message}`,
-        );
-      } else {
-        update.status = 'pending';
-        update.nextAttemptAt = new Date(Date.now() + nextDelay);
-        this.logger.warn(`⚠️ Job ${job._id} failed; retrying later`);
+      const job = await this.persistJobTaskService.getPendingJobs(now);
+
+      if (!job) {
+        this.logger.debug('No pending job found');
+        return;
       }
 
-      await this.persistJobTaskService.updateJob(job._id, update);
+      try {
+        await this.handleJob(job);
+        await this.persistJobTaskService.updateJob(job._id, { status: 'done' });
+        this.logger.log(`✅ Job ${job._id} completed`);
+      } catch (err) {
+        const nextDelay = Math.min(
+          60_000 * Math.pow(2, job.attempts),
+          60 * 60 * 1000,
+        );
+        const update: any = {
+          lastError: err.message,
+          lockedAt: null,
+        };
+
+        if (job.attempts >= job.maxAttempts) {
+          update.status = 'failed';
+          this.logger.warn(
+            `❌ Job ${job._id} failed permanently: ${err.message}`,
+          );
+        } else {
+          update.status = 'pending';
+          update.nextAttemptAt = new Date(Date.now() + nextDelay);
+          this.logger.warn(`⚠️ Job ${job._id} failed; retrying later`);
+        }
+
+        await this.persistJobTaskService.updateJob(job._id, update);
+      }
+    } finally {
+      this.running = false;
     }
   }
 

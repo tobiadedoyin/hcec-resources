@@ -28,10 +28,11 @@ export class GivingService {
   }
 
   async getOrphanedPayments() {
-    const now = new Date();
+    const oneDayAgo = new Date();
+    oneDayAgo.setDate(oneDayAgo.getDate() - 1);
 
     const allExpired = await this.givingModel
-      .find({ expiresAt: { $lt: now } })
+      .find({ expiresAt: { $lt: oneDayAgo } })
       .populate('transaction');
 
     const orphanedPayment = allExpired.filter(
