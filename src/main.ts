@@ -69,6 +69,18 @@ async function bootstrap() {
       }),
     );
 
+    setInterval(() => {
+      const mem = process.memoryUsage();
+      console.log(`
+      🧠 Memory Usage:
+      - RSS: ${(mem.rss / 1024 / 1024).toFixed(2)} MB
+      - Heap Used: ${(mem.heapUsed / 1024 / 1024).toFixed(2)} MB
+      - External: ${(mem.external / 1024 / 1024).toFixed(2)} MB
+      - Array Buffers: ${(mem.arrayBuffers / 1024 / 1024).toFixed(2)} MB
+      `);
+      }, 5000);
+
+
     const port = process.env.port || 5000;
 
     await app.listen(port);
