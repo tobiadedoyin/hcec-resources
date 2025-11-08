@@ -37,7 +37,7 @@ import { HealthController } from './health.controller';
       useFactory: (configService: ConfigService) => ({
       uri: configService.get<string>('MONGO_URI'),
       autoIndex: false,        // prevents index build on startup
-      maxPoolSize: 2,          // reduce memory footprint
+      maxPoolSize: 5,          // reduce memory footprint
       serverSelectionTimeoutMS: 5000, // avoid long retries
   }),
 }),

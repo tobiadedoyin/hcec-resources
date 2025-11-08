@@ -15,7 +15,9 @@ async function bootstrap() {
     });
 
     app.use(helmet());
-    app.setGlobalPrefix('api/v1');
+    app.setGlobalPrefix('api/v1', {
+      exclude: ['/health-check']
+    });
     app.getHttpAdapter().getInstance().set('trust proxy', 4);
 
     app.use(
