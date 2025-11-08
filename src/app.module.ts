@@ -25,12 +25,22 @@ import { PersistJobTaskModule } from './modules/persist-job-task/persist-job-tas
     HFTRModule,
     DailyHoneyModule,
     ConfigModule.forRoot({ isGlobal: true, envFilePath: '.env' }),
+    // MongooseModule.forRootAsync({
+    //   inject: [ConfigService],
+    //   useFactory: (configService: ConfigService) => ({
+    //     uri: configService.get<string>('MONGO_URI'),
+    //   }),
+    // }),
     MongooseModule.forRootAsync({
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
-        uri: configService.get<string>('MONGO_URI'),
-      }),
-    }),
+      uri: configService.get<string>('MONGO_URI'),
+      autoIndex: false,        // prevents index build on startup
+      maxPoolSize: 5,          // reduce memory footprint
+      serverSelectionTimeoutMS: 5000, // avoid long retries
+  }),
+}),
+
   ],
   controllers: [HFTRController],
   providers: [HFTRService],
