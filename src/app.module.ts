@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ScheduleModule } from '@nestjs/schedule';
-import { JobModule } from './jobs/job.module';
+// import { JobModule } from './jobs/job.module';
 import { DailyHoneyModule } from './modules/daily-honey/daily-honey.module';
 import { GivingModule } from './modules/giving/giving.module';
 import { HFTRController } from './modules/honey-from-the-rock/hftr.controller';
@@ -12,12 +12,12 @@ import { HymnModule } from './modules/hymn/hymn.module';
 import { PaymentModule } from './modules/payment/payment.module';
 import { PersistJobTaskModule } from './modules/persist-job-task/persist-job-task.module';
 
-const jobImports =
-  process.env.RUN_JOBS === 'true' ? [ScheduleModule.forRoot(), JobModule] : [];
+// const jobImports =
+//   process.env.RUN_JOBS === 'true' ? [ScheduleModule.forRoot(), JobModule] : [];
 
 @Module({
   imports: [
-    PaymentModule,
+    // PaymentModule,
     // PersistJobTaskModule,
     // ...jobImports,
     GivingModule,
