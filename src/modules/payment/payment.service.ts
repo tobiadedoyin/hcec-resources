@@ -66,11 +66,11 @@ export class PaymentService {
   }
 
   async verifyPayment(
-    transactionRefrence: string,
+    transactionReference: string,
     transactionId: string = null,
   ) {
     const transaction = await this.transactionModel.findOne({
-      transactionRefrence,
+      transactionRefrence: transactionReference,
     });
 
     if (!transaction) throw new NotFoundException('Transaction not found');
@@ -81,7 +81,7 @@ export class PaymentService {
         await this.flutterService.verifyFlutterwavePayment(transactionId);
     } else if (transaction.paymentGateway === PaymentGateway.PAYSTACK) {
       verified =
-        await this.paystackService.verifyPaystackPayment(transactionRefrence);
+        await this.paystackService.verifyPaystackPayment(transactionReference);
     }
 
     const paymentStatus = verified
@@ -94,7 +94,7 @@ export class PaymentService {
       data: {
         status: paymentStatus,
         amount: transaction.amount,
-        reference: transactionRefrence,
+        reference: transactionReference,
       },
     };
   }

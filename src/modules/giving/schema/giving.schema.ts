@@ -12,13 +12,16 @@ export class Giving {
   @Prop({ required: false })
   paymentType?: string;
 
+  @Prop({ type: String, required: true })
+  offeringType: string;
+
   @Prop({ required: false })
   lastName?: string;
 
   @Prop({ required: false })
   firstName?: string;
 
-  @Prop({ required: false, default: 'http://hiscomingevangelicalchurch.org/' })
+  @Prop({ required: false, default: 'info@hiscomingevangelicalchurch.org' })
   email?: string;
 
   @Prop({ required: false })
@@ -36,7 +39,7 @@ export class Giving {
   @Prop({ required: true })
   amount: number;
 
-  @Prop({ type: Date})
+  @Prop({ type: Date })
   expiresAt: Date;
 
   @Prop({ type: Types.ObjectId, ref: 'Transaction', required: false })
@@ -44,4 +47,3 @@ export class Giving {
 }
 
 export const GivingSchema = SchemaFactory.createForClass(Giving);
- 

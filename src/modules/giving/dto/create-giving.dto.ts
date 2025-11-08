@@ -1,4 +1,4 @@
-import { IsOptional, IsString, IsEmail, IsNumber } from 'class-validator';
+import { IsOptional, IsString, IsEmail, IsNumber, IsEnum } from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class CreateGivingDto {
@@ -9,6 +9,9 @@ export class CreateGivingDto {
   @IsOptional()
   @IsString()
   firstName?: string;
+
+  @IsString()
+  offeringType: string;
 
   @IsOptional()
   @IsEmail()
