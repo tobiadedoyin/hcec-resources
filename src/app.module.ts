@@ -18,8 +18,8 @@ const jobImports =
 @Module({
   imports: [
     PaymentModule,
-    PersistJobTaskModule,
-    ...jobImports,
+    // PersistJobTaskModule,
+    // ...jobImports,
     GivingModule,
     HymnModule,
     HFTRModule,

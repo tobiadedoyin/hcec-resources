@@ -137,15 +137,15 @@ export class PaymentService {
       return false;
     }
 
-    const data: CreatePendingJob = {
-      type: PendingJobType.GIVING_STATUS_UPDATE,
-      payload: {
-        gateway: PaymentGateway.PAYSTACK,
-        ...req.body,
-      },
-    };
+    // const data: CreatePendingJob = {
+    //   type: PendingJobType.GIVING_STATUS_UPDATE,
+    //   payload: {
+    //     gateway: PaymentGateway.PAYSTACK,
+    //     ...req.body,
+    //   },
+    // };
 
-    await this.persistJobTaskService.createPendingJob(data);
+    // await this.persistJobTaskService.createPendingJob(data);
 
     return true;
   }
