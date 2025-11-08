@@ -11,6 +11,7 @@ import { HFTRService } from './modules/honey-from-the-rock/hftr.service';
 import { HymnModule } from './modules/hymn/hymn.module';
 import { PaymentModule } from './modules/payment/payment.module';
 import { PersistJobTaskModule } from './modules/persist-job-task/persist-job-task.module';
+import { HealthController } from './health.controller';
 
 // const jobImports =
 //   process.env.RUN_JOBS === 'true' ? [ScheduleModule.forRoot(), JobModule] : [];
@@ -42,7 +43,7 @@ import { PersistJobTaskModule } from './modules/persist-job-task/persist-job-tas
 }),
 
   ],
-  controllers: [HFTRController],
+  controllers: [HFTRController, HealthController],
   providers: [HFTRService],
 })
 export class AppModule {}
