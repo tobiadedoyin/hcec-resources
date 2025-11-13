@@ -9,7 +9,6 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { PaymentService } from './payment.service';
 
 @Controller('payment')
@@ -17,12 +16,11 @@ export class PaymentController {
   constructor(private readonly paymentsService: PaymentService) {}
 
   @Post('verify')
-  @UseGuards(JwtAuthGuard)
   async verifyPayment(
-    @Body() data: { transactionId: string | null, transactionRefrence: string },
+    @Body() data: { transactionId: string | null, transactionReference: string },
   ) {
     return this.paymentsService.verifyPayment(
-      data.transactionRefrence,
+      data.transactionReference,
       data.transactionId,
     );
   }

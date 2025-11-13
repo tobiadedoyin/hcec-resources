@@ -13,16 +13,17 @@ export class PaystackService {
     if (envRedirect) return envRedirect;
 
     return this.config.get<string>('NODE_ENV') === 'production'
-      ? 'https://nexgad-frontend.onrender.com/payment-clearance'
-      : 'http://localhost:3000/payment-clearance';
+      ? 'https://www.hiscomingevangelicalchurch.org/Payment-clearance'
+      : 'http://localhost:3000/Payment-clearance';
   }
 
-  async initPaystackPayment(email: string, amount: number) {
+  async initPaystackPayment(email: string, amount: number, currency = "NGN") {
     const response = await axios.post(
       'https://api.paystack.co/transaction/initialize',
       {
         email,
         amount: amount * 100,
+        currency,
         callback_url: this.getRedirectUrl(),
       },
       {
