@@ -1,10 +1,10 @@
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import * as bodyParser from 'body-parser';
+import { Request, Response } from 'express';
 import rateLimit from 'express-rate-limit';
 import helmet from 'helmet';
 import { AppModule } from './app.module';
-import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {
   const logger = new Logger('Bootstrap');
@@ -69,10 +69,16 @@ async function bootstrap() {
       }),
     );
 
-    const port = process.env.port || 5000;
+    app.getHttpAdapter().get('/api/v1/health', (req: Request, res: Response) => {
+      return res.send('api activated');
+    });
+
+    const port = 5000;
 
     await app.listen(port);
-    logger.log(`Environment: ${process.env.NODE_ENV || 'development'} && app running on ${port}`);
+    logger.log(
+      `Environment: ${process.env.NODE_ENV || 'development'} && app running on ${port}`,
+    );
   } catch (error) {
     logger.error('Error during application bootstrap', error);
     process.exit(1);
