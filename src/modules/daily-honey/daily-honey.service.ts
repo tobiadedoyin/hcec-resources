@@ -5,9 +5,7 @@ import {
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { dayTime } from 'src/enum/daily-honey.enum';
 import { isFutureDate } from 'src/helper/future-time-checker';
-import { getTimeOfDay } from 'src/helper/time-of-day';
 import { DailyHoneyQuery } from './dto/get-daily-honey-query.dto';
 import { DailyHoney, DailyHoneyDocument } from './schema/daily-honey.schema';
 
@@ -33,21 +31,16 @@ export class DailyHoneyService {
       lesson = data;
     } else {
       const date = new Date();
-      const period = getTimeOfDay();
-      
-      if (period !== dayTime.EVENING) {
-        throw new ForbiddenException('Lesson not available at the moment');
-      } else {
-        const data = await this.dailyHoneyModel.findOne({
-          day: date.getDate(),
-          month: String(date.getMonth() + 1),
-          year: date.getFullYear(),
-        });
 
-        if (!data) throw new NotFoundException('Lesson not found');
+      const data = await this.dailyHoneyModel.findOne({
+        day: date.getDate(),
+        month: String(date.getMonth() + 1),
+        year: date.getFullYear(),
+      });
 
-        lesson = data;
-      }
+      if (!data) throw new NotFoundException('Lesson not found');
+
+      lesson = data;
     }
 
     return {
