@@ -57,7 +57,8 @@ const result = [];
 for (let i = 0; i < monthMatches.length; i++) {
   const current = monthMatches[i];
   const start = current.index + current.headerLength;
-  const end = i + 1 < monthMatches.length ? monthMatches[i + 1].index : raw.length;
+  const end =
+    i + 1 < monthMatches.length ? monthMatches[i + 1].index : raw.length;
   const block = raw.slice(start, end).trim();
 
   if (!block) continue;
@@ -90,7 +91,8 @@ for (let i = 0; i < monthMatches.length; i++) {
   for (let j = 0; j < lessonHeaders.length; j++) {
     const L = lessonHeaders[j];
     const lessonStart = L.index + L.headerLength;
-    const lessonEnd = j + 1 < lessonHeaders.length ? lessonHeaders[j + 1].index : block.length;
+    const lessonEnd =
+      j + 1 < lessonHeaders.length ? lessonHeaders[j + 1].index : block.length;
     const lessonBlock = block.slice(lessonStart, lessonEnd).trim();
 
     // If topic is empty on header line, try to pick the next non-empty line in lessonBlock
@@ -123,14 +125,26 @@ for (let i = 0; i < monthMatches.length; i++) {
     }
 
     // Extract fields using case-insensitive markers
-    const scriptureMatch = lessonBlock.match(/Scripture in Focus:\s*([\s\S]*?)(?=(Learn by Heart:|Challenge:|Prayer:|$))/i);
-    const scripture = scriptureMatch ? scriptureMatch[1].trim().replace(/\s+\n/g, '\n') : undefined;
+    const scriptureMatch = lessonBlock.match(
+      /Scripture in Focus:\s*([\s\S]*?)(?=(Learn by Heart:|Challenge:|Prayer:|$))/i,
+    );
+    const scripture = scriptureMatch
+      ? scriptureMatch[1].trim().replace(/\s+\n/g, '\n')
+      : undefined;
 
-    const learnMatch = lessonBlock.match(/Learn by Heart:\s*([\s\S]*?)(?=(Challenge:|Prayer:|$))/i);
-    const learnByHeart = learnMatch ? learnMatch[1].trim().replace(/\s+\n/g, '\n') : undefined;
+    const learnMatch = lessonBlock.match(
+      /Learn by Heart:\s*([\s\S]*?)(?=(Challenge:|Prayer:|$))/i,
+    );
+    const learnByHeart = learnMatch
+      ? learnMatch[1].trim().replace(/\s+\n/g, '\n')
+      : undefined;
 
-    const challengeMatch = lessonBlock.match(/Challenge:\s*([\s\S]*?)(?=(Prayer:|$))/i);
-    const challenge = challengeMatch ? challengeMatch[1].trim().replace(/\s+\n/g, '\n') : undefined;
+    const challengeMatch = lessonBlock.match(
+      /Challenge:\s*([\s\S]*?)(?=(Prayer:|$))/i,
+    );
+    const challenge = challengeMatch
+      ? challengeMatch[1].trim().replace(/\s+\n/g, '\n')
+      : undefined;
 
     const prayerMatch = lessonBlock.match(/Prayer:\s*([\s\S]*?)$/i);
     const prayer = prayerMatch ? prayerMatch[1].trim() : undefined;
@@ -140,7 +154,9 @@ for (let i = 0; i < monthMatches.length; i++) {
     let bodyStartIdx = 0;
 
     if (learnMatch && learnMatch.index !== undefined) {
-      const lm = new RegExp(/Learn by Heart:\s*([\s\S]*?)(?=(Challenge:|Prayer:|$))/i);
+      const lm = new RegExp(
+        /Learn by Heart:\s*([\s\S]*?)(?=(Challenge:|Prayer:|$))/i,
+      );
       const lmExec = lm.exec(lessonBlock);
       if (lmExec && lmExec.index !== undefined) {
         bodyStartIdx = lmExec.index + lmExec[0].length;
@@ -149,8 +165,12 @@ for (let i = 0; i < monthMatches.length; i++) {
       bodyStartIdx = 0;
     }
 
-    const challengeIdx = challengeMatch && challengeMatch.index !== undefined ? challengeMatch.index : -1;
-    const prayerIdx = prayerMatch && prayerMatch.index !== undefined ? prayerMatch.index : -1;
+    const challengeIdx =
+      challengeMatch && challengeMatch.index !== undefined
+        ? challengeMatch.index
+        : -1;
+    const prayerIdx =
+      prayerMatch && prayerMatch.index !== undefined ? prayerMatch.index : -1;
 
     let bodyEndIdx = lessonBlock.length;
     const candidateEnds = [];
@@ -159,7 +179,10 @@ for (let i = 0; i < monthMatches.length; i++) {
     if (candidateEnds.length > 0) bodyEndIdx = Math.min(...candidateEnds);
 
     body = lessonBlock.slice(bodyStartIdx, bodyEndIdx).trim();
-    body = body.replace(/\r/g, '').replace(/\n{3,}/g, '\n\n').trim();
+    body = body
+      .replace(/\r/g, '')
+      .replace(/\n{3,}/g, '\n\n')
+      .trim();
     if (body === '') body = undefined;
 
     const obj = {
@@ -185,4 +208,6 @@ for (let i = 0; i < monthMatches.length; i++) {
 
 // Write out JSON
 fs.writeFileSync(outputPath, JSON.stringify(result, null, 2), 'utf8');
-console.log(`Parsed ${result.length} lesson(s). Output written to ${outputPath}`);
+console.log(
+  `Parsed ${result.length} lesson(s). Output written to ${outputPath}`,
+);
