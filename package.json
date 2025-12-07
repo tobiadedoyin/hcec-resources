@@ -17,7 +17,7 @@
     "start:worker": "node dist/jobs/worker.js",
     "prestart": "node -v && npm -v",
     "test:redis": "ts-node test/redis-test.ts",
-    "test:load": "ts-node test/load-dummy-data.ts",
+    "test:load": "ts-node test/loadDummyData.ts",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",

@@ -5,8 +5,8 @@ export type DailyHoneyDocument = DailyHoney & Document;
 
 @Schema({ timestamps: true })
 export class DailyHoney {
-  @Prop({ required: true })               
-  day: number;
+  @Prop({ required: true })
+  day: string;
 
   @Prop({ required: true })
   topic: string;
@@ -25,6 +25,12 @@ export class DailyHoney {
 
   @Prop()
   prayer?: string;
+
+  @Prop({ type: String })
+  month: string;
+
+  @Prop({ type: Number })
+  year: number;
 }
 
 export const DailyHoneySchema = SchemaFactory.createForClass(DailyHoney);

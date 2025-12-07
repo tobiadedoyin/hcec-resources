@@ -11,7 +11,7 @@ async function load() {
   try {
     await client.connect();
     const db = client.db('hcec');
-    const col = db.collection('yorubahymns');
+    const col = db.collection('dailyhoneys');
 
     const result = await col.insertMany(data);
     console.log(`✅ Inserted ${result.insertedCount} hymns`);
