@@ -3,14 +3,14 @@ import { IsNumber, IsOptional, IsString } from 'class-validator';
 export class DailyHoneyQuery {
   @IsOptional()
   @IsString()
-  day: string;
+  day?: string;
 
   @IsOptional()
   @IsString()
-  month: string;
+  month?: string;
 
   @IsOptional()
   @IsNumber()
-  year: number;
+  year?: number;
 }
 //TODO add strick value to enum for day
