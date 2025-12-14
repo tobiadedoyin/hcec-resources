@@ -1,4 +1,4 @@
-import { Body, Controller, Get } from '@nestjs/common';
+import { Body, Controller, Get, Query } from '@nestjs/common';
 import { DailyHoneyService } from './daily-honey.service';
 import { DailyHoneyQuery } from './dto/get-daily-honey-query.dto';
 
@@ -7,7 +7,7 @@ export class DailyHoneyController {
   constructor(private readonly dailyHoneyService: DailyHoneyService) {}
 
   @Get('/daily-honey')
-  async getDailyHoney(@Body() data: DailyHoneyQuery = null) {
+  async getDailyHoney(@Query() data?: DailyHoneyQuery) {
     return await this.dailyHoneyService.getDailyHoney(data);
   }
 }

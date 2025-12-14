@@ -39,21 +39,21 @@ export class GivingService {
     return updatedGivendetail;
   }
 
-  async getOrphanedPayments() {
-    const oneDayAgo = new Date();
-    oneDayAgo.setDate(oneDayAgo.getDate() - 1);
+  // async getOrphanedPayments() {
+  //   const oneDayAgo = new Date();
+  //   oneDayAgo.setDate(oneDayAgo.getDate() - 1);
 
-    const allExpired = await this.givingModel
-      .find({ expiresAt: { $lt: oneDayAgo } })
-      .populate('transaction');
+  //   const allExpired = await this.givingModel
+  //     .find({ expiresAt: { $lt: oneDayAgo } })
+  //     .populate('transaction');
 
-    const orphanedPayment = allExpired.filter(
-      (p) =>
-        (p.transaction as Transaction).paymentStatus === PaymentStatus.PENDING,
-    );
+  //   const orphanedPayment = allExpired.filter(
+  //     (p) =>
+  //       (p.transaction as Transaction).paymentStatus === PaymentStatus.PENDING,
+  //   );
 
-    return orphanedPayment;
-  }
+  //   return orphanedPayment;
+  // }
 
   async deleteGiving(
     givingId: string,
