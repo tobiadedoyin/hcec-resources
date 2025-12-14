@@ -1,10 +1,10 @@
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import * as bodyParser from 'body-parser';
+import { Request, Response } from 'express';
 import rateLimit from 'express-rate-limit';
 import helmet from 'helmet';
 import { AppModule } from './app.module';
-import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {
   const logger = new Logger('Bootstrap');
@@ -71,22 +71,16 @@ async function bootstrap() {
       }),
     );
 
-    setInterval(() => {
-      const mem = process.memoryUsage();
-      console.log(`
-      🧠 Memory Usage:
-      - RSS: ${(mem.rss / 1024 / 1024).toFixed(2)} MB
-      - Heap Used: ${(mem.heapUsed / 1024 / 1024).toFixed(2)} MB
-      - External: ${(mem.external / 1024 / 1024).toFixed(2)} MB
-      - Array Buffers: ${(mem.arrayBuffers / 1024 / 1024).toFixed(2)} MB
-      `);
-      }, 5000);
+    app.getHttpAdapter().get('/api/v1/health', (req: Request, res: Response) => {
+      return res.send('api activated');
+    });
 
-
-    const port = process.env.port || 5000;
+    const port = 5000;
 
     await app.listen(port);
-    logger.log(`Environment: ${process.env.NODE_ENV || 'development'} && app running on ${port}`);
+    logger.log(
+      `Environment: ${process.env.NODE_ENV || 'development'} && app running on ${port}`,
+    );
   } catch (error) {
     logger.error('Error during application bootstrap', error);
     process.exit(1);
