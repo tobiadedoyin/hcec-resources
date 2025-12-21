@@ -1,5 +1,5 @@
 import { IsEnum } from 'class-validator';
-import { HymnLanguage } from 'src/enum/hymn.enum';
+import { HymnLanguage } from '../../../enum/hymn.enum';
 
 export class HymnQuery {
   @IsEnum(HymnLanguage)

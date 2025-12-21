@@ -1,5 +1,5 @@
 import { IsEnum, IsString } from 'class-validator';
-import { PaymentStatus } from 'src/enum/payment.enum';
+import { PaymentStatus } from '../../../enum/payment.enum';
 
 export class UpdateTransactionDto {
   @IsEnum(PaymentStatus)

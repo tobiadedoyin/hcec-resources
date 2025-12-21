@@ -5,8 +5,8 @@ import {
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { PaymentStatus } from 'src/enum/payment.enum';
-import { generateTrxReference } from 'src/helper/transaction-reference-creator.utils';
+import { PaymentStatus } from '../../enum/payment.enum';
+import { generateTrxReference } from '../../helper/transaction-reference-creator.utils';
 import { PaymentService } from '../payment/payment.service';
 import { Transaction } from '../payment/schema/transaction.schema';
 import { CreateGivingDto } from './dto/create-giving.dto';

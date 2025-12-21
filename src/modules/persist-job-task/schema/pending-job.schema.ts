@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { PendingJobStatus, PendingJobType } from 'src/enum/jobs.enum';
+import { PendingJobStatus, PendingJobType } from '../../../enum/jobs.enum';
 
 @Schema({ timestamps: true })
 export class PendingJob {

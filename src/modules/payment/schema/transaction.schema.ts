@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { PaymentGateway, PaymentStatus } from 'src/enum/payment.enum';
+import { PaymentGateway, PaymentStatus } from '../../../enum/payment.enum';
 
 @Schema({ timestamps: true })
 export class Transaction {

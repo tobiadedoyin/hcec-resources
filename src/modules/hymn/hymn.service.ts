@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException, BadRequestException } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
-import { HymnLanguage } from "src/enum/hymn.enum";
+import { HymnLanguage } from "../../enum/hymn.enum";
 import { AddVerseDto } from "./dto/add-verse.dto";
 import { CreateHymnDto } from "./dto/create-hymn.dto";
 import { HymnSearchQuery } from "./dto/hymn-search-query";

@@ -1,4 +1,4 @@
-import { dayTime } from 'src/enum/daily-honey.enum';
+import { dayTime } from '../enum/daily-honey.enum';
 
 export function getTimeOfDay() {
   const timeString = new Date().toLocaleTimeString('en-US', { hour12: true });

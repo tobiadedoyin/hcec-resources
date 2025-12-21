@@ -8,7 +8,7 @@ import {
   IsString,
   ValidateNested,
 } from 'class-validator';
-import { HymnLanguage } from 'src/enum/hymn.enum';
+import { HymnLanguage } from '../../../enum/hymn.enum';
 
 class CreateVerseDto {
   @IsInt()

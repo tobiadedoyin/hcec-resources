@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { PendingJobType } from 'src/enum/jobs.enum';
+import { PendingJobType } from '../../enum/jobs.enum';
 import { CreatePendingJob } from './dto/create-pending.dto';
 import { PendingJob, PendingJobDocument } from './schema/pending-job.schema';
 

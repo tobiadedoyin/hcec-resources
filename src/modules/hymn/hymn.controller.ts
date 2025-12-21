@@ -12,7 +12,7 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { HymnLanguage } from 'src/enum/hymn.enum';
+import { HymnLanguage } from '../../enum/hymn.enum';
 import { AddVerseDto } from './dto/add-verse.dto';
 import { CreateHymnDto } from './dto/create-hymn.dto';
 import { HymnSearchQuery } from './dto/hymn-search-query';

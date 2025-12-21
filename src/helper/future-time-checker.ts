@@ -1,4 +1,4 @@
-import { DailyHoneyQuery } from "src/modules/daily-honey/dto/get-daily-honey-query.dto";
+import { DailyHoneyQuery } from "../modules/daily-honey/dto/get-daily-honey-query.dto";
 
 const monthMap: { [key: string]: number } = {
   January: 0,

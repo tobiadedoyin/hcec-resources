@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
-import { HymnLanguage } from 'src/enum/hymn.enum';
+import { HymnLanguage } from '../../../enum/hymn.enum';
 
 @Schema({ _id: false })
 export class Verse {

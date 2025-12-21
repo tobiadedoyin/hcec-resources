@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
-import { Transaction } from 'src/modules/payment/schema/transaction.schema';
+import { Transaction } from '../../../modules/payment/schema/transaction.schema';
 
 export type GivingDocument = Giving & Document;
 

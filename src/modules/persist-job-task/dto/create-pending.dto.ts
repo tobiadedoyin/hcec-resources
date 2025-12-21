@@ -1,6 +1,6 @@
 import { IsEnum, IsObject, IsOptional } from 'class-validator';
-import { PendingJobType } from 'src/enum/jobs.enum';
-import { PaymentGateway } from 'src/enum/payment.enum';
+import { PendingJobType } from '../../../enum/jobs.enum';
+import { PaymentGateway } from '../../../enum/payment.enum';
 
 export class CreatePendingJob {
   @IsEnum(PendingJobType)
