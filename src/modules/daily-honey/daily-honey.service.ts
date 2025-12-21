@@ -22,9 +22,9 @@ export class DailyHoneyService {
     const hasQuery = !!query && Object.keys(query).length > 0;
 
     if (hasQuery) {
-      const isFuture = isFutureDate(query);
-      if (isFuture)
-        throw new ForbiddenException('Lesson not available at the moment');
+      // const isFuture = isFutureDate(query);
+      // if (isFuture)
+      //   throw new ForbiddenException('Lesson not available at the moment');
 
       const data = await this.dailyHoneyModel.findOne(query);
 
