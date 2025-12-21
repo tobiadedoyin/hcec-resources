@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { isFutureDate } from 'src/helper/future-time-checker';
+import { isFutureDate } from '../../helper/future-time-checker';
 import { DailyHoneyQuery } from './dto/get-daily-honey-query.dto';
 import { DailyHoney, DailyHoneyDocument } from './schema/daily-honey.schema';
 
