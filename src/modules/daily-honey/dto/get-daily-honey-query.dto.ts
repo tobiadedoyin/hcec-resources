@@ -1,5 +1,5 @@
 import { IsEnum, IsNumber, IsOptional, IsString } from 'class-validator';
-import { Month } from 'src/enum/daily-honey.enum';
+import { Month } from '../../../enum/daily-honey.enum';
 
 export class DailyHoneyQuery {
   @IsOptional()
