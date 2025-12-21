@@ -1,16 +1,17 @@
-import { IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsEnum, IsNumber, IsOptional, IsString } from 'class-validator';
+import { Month } from 'src/enum/daily-honey.enum';
 
 export class DailyHoneyQuery {
   @IsOptional()
   @IsString()
-  day: string;
+  day?: string;
 
   @IsOptional()
   @IsString()
-  month: string;
+  @IsEnum(Month)
+  month?: string;
 
   @IsOptional()
   @IsNumber()
-  year: number;
+  year?: number;
 }
-//TODO add strick value to enum for day
