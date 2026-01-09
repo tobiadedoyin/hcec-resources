@@ -5,7 +5,7 @@ https://docs.nestjs.com/providers#services
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { HftrLanguage, HftrType } from 'src/enum/hftr.enum';
+import { HftrLanguage, HftrType } from '../../enum/hftr.enum';
 import { HftrFilterDto } from './dto/get-hftr.dto';
 import { YorubaMapper } from './english-yoruba-number.helper';
 import {

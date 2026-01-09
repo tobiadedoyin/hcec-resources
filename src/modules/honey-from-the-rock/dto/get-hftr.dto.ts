@@ -1,5 +1,5 @@
 import { IsEnum, IsString } from 'class-validator';
-import { HftrLanguage, HftrType } from 'src/enum/hftr.enum';
+import { HftrLanguage, HftrType } from '../../../enum/hftr.enum';
 
 export class HftrFilterDto {
   @IsString()
