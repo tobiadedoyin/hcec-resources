@@ -1,0 +1,11 @@
+services:
+  hcec-resources-software:
+    build: .
+    container_name: hcec-resources-software
+    restart: always
+
+    env_file:
+      - .env
+
+    ports:
+      - "3007:3000"
