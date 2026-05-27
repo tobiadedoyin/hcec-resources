@@ -75,7 +75,7 @@ async function bootstrap() {
       return res.send('api activated');
     });
 
-    const port = 5000;
+    const port = process.env.PORT || 3033;
 
     await app.listen(port);
     logger.log(

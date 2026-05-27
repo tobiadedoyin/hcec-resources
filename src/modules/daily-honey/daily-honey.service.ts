@@ -17,7 +17,6 @@ export class DailyHoneyService {
   ) {}
 
   async getDailyHoney(query: DailyHoneyQuery) {
-    console.log(">>>>>>>>>>> 1", query)
     let lesson: DailyHoney;
     const hasQuery = !!query && Object.keys(query).length > 0;
 
@@ -28,7 +27,6 @@ export class DailyHoneyService {
 
       const data = await this.dailyHoneyModel.findOne(query);
 
-      console.log(">>>>>>>>>>>>> 2", data)
       if (!data) throw new NotFoundException('Lesson not found');
 
       lesson = data;
