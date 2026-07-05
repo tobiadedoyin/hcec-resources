@@ -1,4 +1,4 @@
-import { IsEnum, IsString } from 'class-validator';
+import { IsDateString, IsEnum, IsNumber, IsOptional, IsString } from 'class-validator';
 import { HftrLanguage, HftrType } from 'src/enum/hftr.enum';
 
 export class HftrFilterDto {
@@ -10,6 +10,11 @@ export class HftrFilterDto {
   @IsEnum(HftrLanguage)
   language: HftrLanguage;
 
+  @IsOptional()
   @IsString()
-  lesson: string;
+  lesson?: string;
+
+  @IsOptional()
+  @IsDateString()
+  date?: string;
 }
