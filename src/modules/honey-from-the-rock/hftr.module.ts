@@ -7,19 +7,24 @@ import {
   AdultEnglishHFTRSchema,
 } from './schema/adult-english-hftr.schema';
 import {
-  AdultYorubaHFTR,
-  AdultYorubaHFTRSchema,
-} from './schema/adult-yoruba-hftr.schema';
+  AdultFRENCHHFTR,
+  AdultFRENCHHFTRSchema,
+} from './schema/adult-french-hftr.schema';
 import {
   ChildrenEnglishHFTR,
   ChildrenEnglishHFTRSchema,
 } from './schema/children-english-hftr.schema';
+import {
+  ChildrenFRENCHHFTR,
+  ChildrenFRENCHHFTRSchema,
+} from './schema/children-french-hftr.schema';
 
 @Module({
   imports: [
     MongooseModule.forFeature([
       { name: ChildrenEnglishHFTR.name, schema: ChildrenEnglishHFTRSchema },
-      { name: AdultYorubaHFTR.name, schema: AdultYorubaHFTRSchema },
+      { name: ChildrenFRENCHHFTR.name, schema: ChildrenFRENCHHFTRSchema },
+      { name: AdultFRENCHHFTR.name, schema: AdultFRENCHHFTRSchema },
       { name: AdultEnglishHFTR.name, schema: AdultEnglishHFTRSchema },
     ]),
   ],

@@ -1,10 +1,10 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
-export type AdultYorubaHFTRDocument = AdultYorubaHFTR & Document;
+export type AdultFRENCHHFTRDocument = AdultFRENCHHFTR & Document;
 
-@Schema({collection: "adultyorubahftrs", timestamps: true })
-export class AdultYorubaHFTR {
+@Schema({collection: "adultfrenchhftrs", timestamps: true })
+export class AdultFRENCHHFTR {
   @Prop({ type: String, required: true })
   topic: string;
 
@@ -32,4 +32,4 @@ export class AdultYorubaHFTR {
   @Prop({ type: [String], default: [] })
   lifeApplication?: string[];
 }
-export const AdultYorubaHFTRSchema = SchemaFactory.createForClass(AdultYorubaHFTR);
+export const AdultFRENCHHFTRSchema = SchemaFactory.createForClass(AdultFRENCHHFTR);

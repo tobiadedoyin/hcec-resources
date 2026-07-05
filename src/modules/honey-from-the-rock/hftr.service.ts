@@ -13,13 +13,17 @@ import {
   AdultEnglishHFTRDocument,
 } from './schema/adult-english-hftr.schema';
 import {
-  AdultYorubaHFTR,
-  AdultYorubaHFTRDocument,
-} from './schema/adult-yoruba-hftr.schema';
+  AdultFRENCHHFTR,
+  AdultFRENCHHFTRDocument,
+} from './schema/adult-french-hftr.schema';
 import {
   ChildrenEnglishHFTR,
   ChildrenEnglishHFTRDocument,
 } from './schema/children-english-hftr.schema';
+import {
+  ChildrenFRENCHHFTR,
+  ChildrenFRENCHHFTRDocument,
+} from './schema/children-french-hftr.schema';
 
 @Injectable()
 export class HFTRService {
@@ -29,19 +33,24 @@ export class HFTRService {
 
     @InjectModel(AdultEnglishHFTR.name)
     private readonly adultEngHftrModel: Model<AdultEnglishHFTRDocument>,
+    
+    @InjectModel(AdultFRENCHHFTR.name)
+    private readonly adultFrenchHftrModel: Model<AdultFRENCHHFTRDocument>,
 
-    @InjectModel(AdultYorubaHFTR.name)
-    private readonly adultYrbHftrModel: Model<AdultYorubaHFTRDocument>,
-  ) {}
+    @InjectModel(ChildrenFRENCHHFTR.name)
+    private readonly childFrenchHftrModel: Model<ChildrenFRENCHHFTRDocument>,
+  ) { }
 
   async getHftrLessons(filter: HftrFilterDto) {
+
     const modelMap = {
       [HftrLanguage.ENGLISH]: {
         [HftrType.ADULT]: this.adultEngHftrModel,
         [HftrType.CHILD]: this.childEngHftrModel,
       },
-      [HftrLanguage.YORUBA]: {
-        [HftrType.ADULT]: this.adultYrbHftrModel,
+      [HftrLanguage.FRENCH]: {
+        [HftrType.ADULT]: this.adultFrenchHftrModel,
+        [HftrType.CHILD]: this.childFrenchHftrModel,
       },
     };
 
@@ -53,14 +62,34 @@ export class HFTRService {
       );
     }
 
-    const lessonNumebr =
-      filter.language === HftrLanguage.ENGLISH
-        ? filter.lesson
-        : YorubaMapper[filter.lesson.toUpperCase()];
+    let query: any = {};
 
-    const lesson = await model.findOne({
-      lesson: { $regex: `^${lessonNumebr}`, $options: 'i' },
-    });
+    if (filter.lesson) {
+      let lessonNumebr = filter.lesson;
+      if (filter.language === HftrLanguage.YORUBA) {
+        lessonNumebr = YorubaMapper[filter.lesson.toUpperCase()] || filter.lesson;
+      }
+      query.lesson = { $regex: `^${lessonNumebr}`, $options: 'i' };
+    }
+
+    if (filter.date) {
+      // Create UTC start and end of day based on the provided date string (e.g. "2026-07-05")
+      // Extract just the date part in case it includes time
+      const dateStr = filter.date.split('T')[0];
+      const startStr = `${dateStr}T00:00:00.000Z`;
+      const endStr = `${dateStr}T23:59:59.999Z`;
+      
+      query.date = { $gte: startStr, $lte: endStr };
+    }
+
+    if (!filter.lesson && !filter.date) {
+      throw new NotFoundException('Please provide a lesson or a date');
+    }
+
+    console.log('HFTR Service query:', JSON.stringify(query));
+    // Use .collection.findOne to bypass Mongoose schema casting
+    // because the DB actually stores dates as strings but the schema says Date.
+    const lesson = await model.collection.findOne(query);
 
     if (!lesson) {
       throw new NotFoundException('Lesson not found');
